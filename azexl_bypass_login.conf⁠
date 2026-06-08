@@ -1,0 +1,22 @@
+[General]
+loglevel = notify
+bypass-system = true
+dns-server = 1.1.1.1, 8.8.8.8
+[Rule]
+1. BẮT BUỘC: Cho phép trực tiếp (DIRECT) các cổng đăng nhập/xác thực bảo mật để tránh lỗi SSL Pinning/Network Error
+DOMAIN-KEYWORD,login,DIRECT
+DOMAIN-KEYWORD,auth,DIRECT
+DOMAIN-KEYWORD,account,DIRECT
+DOMAIN-SUFFIX,facebook.com,DIRECT
+DOMAIN-SUFFIX,google.com,DIRECT
+2. Định tuyến luồng mạng game (Chuyển tiếp qua Proxy để tối ưu hóa)
+DOMAIN-SUFFIX,garena.com,Proxy
+DOMAIN-SUFFIX,freefiremobile.com,Proxy
+FINAL,DIRECT
+[Script]
+Sử dụng Regex Pattern thu hẹp phạm vi để chỉ nhắm vào luồng dữ liệu phụ, bỏ qua luồng đăng nhập nhạy cảm
+azexl_aim_drag = type=http-response,pattern=^https?://(client|config|patch|status).(freefiremobile|garena).com/.*,requires-body=1,max-size=131072,script-path=https://raw.githubusercontent.com/yseavlong2010-dotcom/NOXERA/refs/heads/main/AimX.js
+[MITM]
+enable = true
+CHỈ giải mã các tên miền con không chứa cổng bảo mật đăng nhập
+hostname = client.freefiremobile.com, config.freefiremobile.com, patch.freefiremobile.com, status.freefiremobile.com, client.garena.com, config.garena.com
